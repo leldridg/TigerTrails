@@ -34,5 +34,13 @@
         android:src="@drawable/ic_add"
         app:layout_anchor="@id/bottomAppBar" />
 
+    <FrameLayout
+        android:id="@+id/fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
