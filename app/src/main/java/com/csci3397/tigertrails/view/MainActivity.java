@@ -1,13 +1,17 @@
 package com.csci3397.tigertrails.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.csci3397.tigertrails.R;
+import com.csci3397.tigertrails.model.Path;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 //this is a different test
@@ -44,7 +48,5 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
     }
 }

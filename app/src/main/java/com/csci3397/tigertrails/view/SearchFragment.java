@@ -2,13 +2,21 @@ package com.csci3397.tigertrails.view;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.csci3397.tigertrails.R;
+import com.csci3397.tigertrails.model.Path;
+import com.csci3397.tigertrails.model.RecyclerViewAdapter;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +33,8 @@ public class SearchFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ArrayList<Path> paths;
+    private RecyclerView recyclerView;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -62,5 +72,25 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setUpPaths();
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), paths);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void setUpPaths() {
+        paths = new ArrayList<>();
+        for(int i = 0; i < 3; i++) {
+            paths.add(new Path("Test Path", .5, 3));
+        }
     }
 }
