@@ -8,6 +8,12 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,9 +37,9 @@
 
             <TextView
                 android:id="@+id/pathName"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="45dp"
+                android:layout_marginStart="10dp"
                 android:text="Path Name"
                 android:textColor="#000000"
                 android:textSize="20sp"
@@ -43,12 +49,12 @@
 
             <TextView
                 android:id="@+id/estTime"
-                android:layout_width="50dp"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="14dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="18dp"
                 android:text="0 min"
-                android:textAlignment="center"
+                android:textAlignment="viewEnd"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -56,12 +62,12 @@
 
             <TextView
                 android:id="@+id/distance"
-                android:layout_width="50dp"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:layout_marginEnd="5dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="8dp"
                 android:text="0 mi"
-                android:textAlignment="center"
+                android:textAlignment="viewEnd"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/bookmark"
@@ -82,7 +88,7 @@
             <ImageButton
                 android:id="@+id/downvote"
                 android:layout_width="48dp"
-                android:layout_height="31dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="1dp"
                 android:background="@android:color/transparent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -94,7 +100,7 @@
             <ImageButton
                 android:id="@+id/upvote"
                 android:layout_width="48dp"
-                android:layout_height="31dp"
+                android:layout_height="40dp"
                 android:layout_marginBottom="1dp"
                 android:background="@android:color/transparent"
                 app:layout_constraintBottom_toTopOf="@+id/rating"
