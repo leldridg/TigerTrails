@@ -23,6 +23,8 @@ import java.util.ArrayList;
  * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+//TODO: make a way to hide bottom nav bar while search bar is focused? / keboard displayed?
 public class SearchFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match

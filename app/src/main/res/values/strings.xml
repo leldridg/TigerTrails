@@ -3,4 +3,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="my_paths"><u>My Paths</u></string>
     <string name="bookmarked"><u>Bookmarked</u></string>
+    <string name="title_activity_patrh_screen">PatrhScreenActivity</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
