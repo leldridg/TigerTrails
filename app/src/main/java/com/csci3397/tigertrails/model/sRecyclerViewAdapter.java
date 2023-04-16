@@ -14,27 +14,27 @@ import com.csci3397.tigertrails.R;
 
 import java.util.ArrayList;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>{
+public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdapter.MyViewHolder>{
     Context context;
     ArrayList<Path> paths;
 
-    public RecyclerViewAdapter(Context context, ArrayList<Path> paths){
+    public sRecyclerViewAdapter(Context context, ArrayList<Path> paths){
         this.context = context;
         this.paths = paths;
     }
 
     @NonNull
     @Override
-    public RecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public sRecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflating layout, giving look to each row
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.search_list_row, parent, false);
 
-        return new RecyclerViewAdapter.MyViewHolder(view);
+        return new sRecyclerViewAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull sRecyclerViewAdapter.MyViewHolder holder, int position) {
         //assigning values to the rows created in the layout file based on the position of the recycler view
 
         holder.pathName.setText(paths.get(position).getPathName());

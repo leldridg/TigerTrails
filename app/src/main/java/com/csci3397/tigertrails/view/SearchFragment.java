@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.csci3397.tigertrails.R;
 import com.csci3397.tigertrails.model.Path;
-import com.csci3397.tigertrails.model.RecyclerViewAdapter;
+import com.csci3397.tigertrails.model.sRecyclerViewAdapter;
 
 import java.util.ArrayList;
 
@@ -80,16 +80,16 @@ public class SearchFragment extends Fragment {
 
         setUpPaths();
 
-        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.searchRecyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), paths);
+        sRecyclerViewAdapter adapter = new sRecyclerViewAdapter(getContext(), paths);
         recyclerView.setAdapter(adapter);
     }
 
     private void setUpPaths() {
         paths = new ArrayList<>();
-        for(int i = 0; i < 3; i++) {
+        for(int i = 0; i < 16; i++) {
             paths.add(new Path("Test Path", .5, 3));
         }
     }
