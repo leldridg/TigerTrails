@@ -34,15 +34,13 @@ public class MainActivity extends AppCompatActivity {
 
         Context context = this;
 
-        //put in a log msg to test if context knows which fragment is being displayed?
-        Log.d("context", context.toString());
-
         makePathButton = findViewById(R.id.makePathButton);
 
         //when fab is clicked, take user to choose method screen
         makePathButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("context", context.toString());
                 Intent intent = new Intent(context, ChooseMethodActivity.class);
                 startActivity(intent);
             }
