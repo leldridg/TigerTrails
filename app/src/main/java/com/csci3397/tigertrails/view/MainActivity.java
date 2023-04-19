@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         makePathButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("context", context.toString());
                 Intent intent = new Intent(context, ChooseMethodActivity.class);
                 startActivity(intent);
             }
