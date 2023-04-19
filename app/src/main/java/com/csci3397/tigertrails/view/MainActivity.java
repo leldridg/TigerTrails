@@ -3,12 +3,16 @@ package com.csci3397.tigertrails.view;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.csci3397.tigertrails.R;
 import com.csci3397.tigertrails.model.Path;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
@@ -20,10 +24,24 @@ public class MainActivity extends AppCompatActivity {
     SearchFragment searchFragment = new SearchFragment();
     UserFragment userFragment = new UserFragment();
 
+    FloatingActionButton makePathButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Context context = this;
+
+        makePathButton = findViewById(R.id.makePathButton);
+        makePathButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //when fab is clicked, take user to choose method screen
+                Intent intent = new Intent(context, ChooseMethodActivity.class);
+                startActivity(intent);
+            }
+        });
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.getMenu().getItem(1).setEnabled(false);
