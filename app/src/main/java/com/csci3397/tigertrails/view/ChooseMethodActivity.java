@@ -46,5 +46,14 @@ public class ChooseMethodActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //TODO: change so that the back button takes user back to the last fragment they were on (LOW PRIORITY)
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
