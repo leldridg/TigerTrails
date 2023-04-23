@@ -35,6 +35,7 @@ public class MapsFragment extends Fragment {
             LatLng trinity = new LatLng(29.462017021151944, -98.48335965798844);
             googleMap.addMarker(new MarkerOptions().position(trinity));
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(trinity));
+            googleMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         }
     };
 
