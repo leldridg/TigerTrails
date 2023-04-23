@@ -9,14 +9,9 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.csci3397.tigertrails.R;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class WalkPathActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class WalkPathActivity extends AppCompatActivity {
 
     FloatingActionButton backButton;
     FloatingActionButton exitButton;
@@ -52,14 +47,7 @@ public class WalkPathActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
 
-        //MAP
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
     }
 
-    public void onMapReady(GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-    }
 
 }
