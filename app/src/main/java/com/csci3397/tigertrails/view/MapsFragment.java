@@ -14,7 +14,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsFragment extends Fragment {
@@ -32,10 +35,15 @@ public class MapsFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            LatLng trinity = new LatLng(-34, 151);
-            googleMap.addMarker(new MarkerOptions().position(trinity));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(trinity));
+            LatLng trinity = new LatLng(29.46210576444808, -98.4833918445878);
+            //googleMap.addMarker(new MarkerOptions().position(trinity));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(trinity, 15));
             //googleMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+            GroundOverlayOptions trinityMap = new GroundOverlayOptions()
+                    .image(BitmapDescriptorFactory.fromResource(R.drawable.cropped_tiger_trails_map))
+                    .positionFromBounds(new LatLngBounds(new LatLng(29.456563485593676, -98.48813698915492),
+                            new LatLng(29.466813470420874, -98.47901476675511)));
+            googleMap.addGroundOverlay(trinityMap);
         }
     };
 
