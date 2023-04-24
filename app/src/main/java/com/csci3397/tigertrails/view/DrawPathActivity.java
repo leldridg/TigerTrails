@@ -16,10 +16,6 @@ public class DrawPathActivity extends AppCompatActivity {
     FloatingActionButton backButton;
     FloatingActionButton exitButton;
 
-    ImageButton undoButton;
-    ImageButton toggleButton;
-    ImageButton finishButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
