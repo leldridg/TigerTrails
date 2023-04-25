@@ -83,6 +83,7 @@ public class MapsFragment extends Fragment {
                         if(points.size() > 1) {
                             Polyline l = googleMap.addPolyline(new PolylineOptions()
                                     .add(points.get(points.size()-1).getLatLng(), points.get(points.size()-2).getLatLng())
+                                    .color(Color.RED)
                             );
                             lines.add(l);
                         }
