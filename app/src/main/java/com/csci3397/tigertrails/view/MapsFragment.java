@@ -5,15 +5,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.csci3397.tigertrails.R;
+import com.csci3397.tigertrails.model.Path;
 import com.csci3397.tigertrails.model.Point;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,6 +40,7 @@ import java.util.ArrayList;
 public class MapsFragment extends Fragment {
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
+
 
         /**
          * Manipulates the map once available.
@@ -94,7 +102,7 @@ public class MapsFragment extends Fragment {
                 undoButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //checking both like this may be redundant or lead to errors
+                        //checking both like this may be redundant
                         int lastP = points.size()-1;
                         if(lastP > 0) { //if there is a polyline to remove
                             int lastL = lines.size()-1;
@@ -109,6 +117,65 @@ public class MapsFragment extends Fragment {
                             markers.get(lastM).remove();
                             markers.remove(lastM);
                         }
+                    }
+                });
+
+                finishButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //set up prompt for ask user for path name and description and to confirm they are done
+
+                        Dialog finishDialog = new Dialog(view.getContext());
+                        finishDialog.setContentView(R.layout.finish_path_dialog_layout);
+                        finishDialog.show();
+
+                        ImageButton close = finishDialog.findViewById(R.id.closeButton);
+                        Button create = finishDialog.findViewById(R.id.createPathButton);
+                        TextView error = finishDialog.findViewById(R.id.errorPrompt);
+                        EditText inputPathName = finishDialog.findViewById(R.id.pathNameInput);
+                        EditText inputDescription = finishDialog.findViewById(R.id.descriptionInput);
+
+                        //allows user to cancel finish
+                        close.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                finishDialog.dismiss();
+                            }
+                        });
+
+                        //checks to make sure path can be created (has name, desc, at least 2 points)
+                        //if cannot be created, display error message
+                        //if can be created, create a new path and add to the ArrayList of the current user's paths (and maybe all paths?)
+                        create.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String inName = inputPathName.getText().toString().trim();
+                                String inDesc = inputDescription.getText().toString().trim();
+                                if (points.size() < 2) {
+                                    error.setText("Please add at least two points to your path.");
+                                } else if(inName.equals("") || inDesc.equals("")) {
+                                    error.setText("Please enter both a path name and description.");
+                                } else {
+                                    error.setText("");
+                                    //calculate total path distance in meters
+                                    double m = 0;
+                                    for(int i = 0; i < points.size()-1; i++) {
+                                        LatLng point1 = points.get(i).getLatLng();
+                                        LatLng point2 = points.get(i+1).getLatLng();
+                                        m += distanceBetween(point1,point2);
+                                    }
+                                    // calculate estimated time to walk path in minutes
+                                    double s = m * 2.5;
+                                    double min = s / 60;
+                                    // make new path
+                                    Path newPath = new Path(inName, inDesc, m, min, points);
+
+                                    //TODO: add path to a user list of paths, allPaths?
+
+                                    //TODO: add intent to get user screen if possible
+                                }
+                            }
+                        });
                     }
                 });
 
@@ -140,4 +207,22 @@ public class MapsFragment extends Fragment {
             mapFragment.getMapAsync(callback);
         }
     }
+
+    // helper method to calculate the distance between two LatLng points
+    // constructed with help from StackOverflow / ChatGPT
+    private double distanceBetween(LatLng p1, LatLng p2) {
+        double R = 6371; // Earth's radius in kilometers
+        double dLat = Math.toRadians(p2.latitude - p1.latitude);
+        double dLon = Math.toRadians(p2.longitude - p1.longitude);
+        double lat1 = Math.toRadians(p1.latitude);
+        double lat2 = Math.toRadians(p2.latitude);
+
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double distance = R * c;
+
+        return distance * 1000; // return distance in meters
+    }
+
 }

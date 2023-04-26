@@ -19,7 +19,6 @@ import com.google.android.material.navigation.NavigationBarView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-//this is a different test
     BottomNavigationView bottomNavigationView;
 
     SearchFragment searchFragment = new SearchFragment();
