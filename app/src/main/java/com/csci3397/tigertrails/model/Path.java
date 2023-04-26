@@ -1,6 +1,8 @@
 package com.csci3397.tigertrails.model;
 
-public class Path {
+import java.io.Serializable;
+
+public class Path implements Serializable {
     String pathName;
     int rating;
     double distance;

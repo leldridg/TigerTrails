@@ -1,6 +1,7 @@
 package com.csci3397.tigertrails.model;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.csci3397.tigertrails.R;
+import com.csci3397.tigertrails.view.ChooseMethodActivity;
+import com.csci3397.tigertrails.view.PathActivity;
 
 import java.util.ArrayList;
 
 public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdapter.MyViewHolder>{
     Context context;
-    ArrayList<Path> paths;
+    static ArrayList<Path> paths;
 
     public sRecyclerViewAdapter(Context context, ArrayList<Path> paths){
         this.context = context;
@@ -30,7 +33,7 @@ public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdap
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.search_list_row, parent, false);
 
-        return new sRecyclerViewAdapter.MyViewHolder(view);
+        return new sRecyclerViewAdapter.MyViewHolder(view, context);
     }
 
     @Override
@@ -49,7 +52,7 @@ public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdap
         return paths.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         //grabbing row view from layout file
         //similar to an onCreate method
 
@@ -61,7 +64,10 @@ public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdap
         TextView minutes;
         TextView pathName;
 
-        public MyViewHolder(@NonNull View itemView) {
+        int ratingNum;
+        boolean isBookmarked;
+
+        public MyViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
 
             upvote = itemView.findViewById(R.id.upvote); //stuff might go wrong here, R
@@ -71,6 +77,59 @@ public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdap
             distance = itemView.findViewById(R.id.distance);
             minutes = itemView.findViewById(R.id.estTime);
             pathName = itemView.findViewById(R.id.pathName);
+
+            pathName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Get the position of the clicked item
+                    int position = getAdapterPosition();
+
+                    // Make sure the position is valid, i.e. actually exists in the view
+                    if (position != RecyclerView.NO_POSITION) {
+                        // Get the path at that position
+                        Path clickedPath = paths.get(position);
+
+                        // Create an intent to start the PathActivity and pass the clicked path as extra
+                        Intent intent = new Intent(context, PathActivity.class);
+                        intent.putExtra("clicked_path", clickedPath);
+                        context.startActivity(intent);
+                    }
+                }
+            });
+
+            isBookmarked = false;
+            bookmark.setImageResource(R.drawable.ic_bookmark_border);
+
+            ratingNum = 0;
+            rating.setText(""+ratingNum);
+
+            upvote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ratingNum = ratingNum + 1;
+                    rating.setText(""+ratingNum);
+                }
+            });
+            downvote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ratingNum = ratingNum - 1;
+                    rating.setText(""+ratingNum);
+                }
+            });
+
+            bookmark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (isBookmarked) {
+                        bookmark.setImageResource(R.drawable.ic_bookmark_border);
+                        isBookmarked = false;
+                    } else {
+                        bookmark.setImageResource(R.drawable.ic_bookmark_filled);
+                        isBookmarked = true;
+                    }
+                }
+            });
         }
     }
 }
