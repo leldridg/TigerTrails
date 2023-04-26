@@ -1,8 +1,9 @@
 package com.csci3397.tigertrails.model;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Path {
+public class Path implements Serializable {
     private String pathName;
 
     //private String creator;
