@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="215dp"
+    android:layout_gravity="center">
+
+    <Button
+        android:id="@+id/createPathButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Stop"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/stopDescInput"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/finishDialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="Adding a Stop?"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/stopDescInput"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/sErrorPrompt"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint="Stop description"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Give your stop a description!"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/finishDialogTitle"/>
+
+    <TextView
+        android:id="@+id/sErrorPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/prompt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text=""
+        android:textColor="@color/maroon"
+        android:textSize="10sp" />
+
+    <ImageButton
+        android:id="@+id/closeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        app:srcCompat="@drawable/ic_close"
+        android:backgroundTint="@android:color/transparent"
+        app:tint="@color/gray"/>
+
+</RelativeLayout>

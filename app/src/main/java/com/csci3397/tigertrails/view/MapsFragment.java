@@ -120,6 +120,13 @@ public class MapsFragment extends Fragment {
                     }
                 });
 
+                toggleButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //TODO:implement toggle feature
+                    }
+                });
+
                 finishButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
