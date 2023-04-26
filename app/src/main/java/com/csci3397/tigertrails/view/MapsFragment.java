@@ -35,6 +35,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class MapsFragment extends Fragment {
@@ -98,18 +100,59 @@ public class MapsFragment extends Fragment {
                             //add regular point to logical list of points
                             Point p = new Point(latLng);
                             points.add(p);
+                            if(points.size() > 1) {
+                                Polyline l = googleMap.addPolyline(new PolylineOptions()
+                                        .add(points.get(points.size()-1).getLatLng(), points.get(points.size()-2).getLatLng())
+                                        .color(Color.RED)
+                                );
+                                lines.add(l);
+                            }
                         }
                         //if stop
                         if (stopToggleOn) {
                             //open new dialog box to prompt user for stop description
                             //TODO: finish toggle button
-                        }
-                        if(points.size() > 1) {
-                            Polyline l = googleMap.addPolyline(new PolylineOptions()
-                                    .add(points.get(points.size()-1).getLatLng(), points.get(points.size()-2).getLatLng())
-                                    .color(Color.RED)
-                            );
-                            lines.add(l);
+                            Dialog stopDialog = new Dialog(getContext());
+                            stopDialog.setContentView(R.layout.add_stop_dialog_layout);
+                            stopDialog.show();
+
+                            ImageButton close = stopDialog.findViewById(R.id.closeButton);
+                            Button add = stopDialog.findViewById(R.id.addStop);
+                            TextView error = stopDialog.findViewById(R.id.sErrorPrompt);
+                            EditText desc = stopDialog.findViewById(R.id.stopDescInput);
+
+                            close.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    stopDialog.dismiss();
+                                }
+                            });
+
+                            add.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    String inDesc = desc.getText().toString().trim();
+                                    if (inDesc.equals("")) {
+                                        error.setText("Please enter a stop description.");
+                                    } else {
+                                        Marker m = googleMap.addMarker(new MarkerOptions().position(latLng).title(inDesc) //TODO: check if setting title will show desc on click
+                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                                        );
+                                        markers.add(m);
+                                        //add regular point to logical list of points
+                                        Point p = new Point(latLng, inDesc);
+                                        points.add(p);
+                                        if(points.size() > 1) {
+                                            Polyline l = googleMap.addPolyline(new PolylineOptions()
+                                                    .add(points.get(points.size()-1).getLatLng(), points.get(points.size()-2).getLatLng())
+                                                    .color(Color.RED)
+                                            );
+                                            lines.add(l);
+                                        }
+                                        stopDialog.dismiss();
+                                    }
+                                }
+                            });
                         }
                     }
                 });
@@ -145,7 +188,6 @@ public class MapsFragment extends Fragment {
                         }
                         if (stopToggleOn) {
                             toggleButton.setImageResource(R.drawable.ic_pin);
-                            toggleButton.setColorFilter(Color.GREEN);
                         }
                         stopToggleOn = !stopToggleOn;
                     }

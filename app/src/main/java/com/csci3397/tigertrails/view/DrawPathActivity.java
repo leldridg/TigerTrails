@@ -17,7 +17,7 @@ public class DrawPathActivity extends AppCompatActivity {
     FloatingActionButton backButton;
     FloatingActionButton exitButton;
 
-    ImageButton toggle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +26,7 @@ public class DrawPathActivity extends AppCompatActivity {
 
         Context context = this;
 
-        toggle = findViewById(R.id.toggleModeButton);
-        toggle.setColorFilter(Color.GREEN);
+
 
         backButton = findViewById(R.id.backButton);
         exitButton = findViewById(R.id.exitButton);
