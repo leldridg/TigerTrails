@@ -142,7 +142,6 @@ public class MapsFragment extends Fragment {
                         //TODO:implement toggle feature
                         if (!stopToggleOn) {
                             toggleButton.setImageResource(R.drawable.ic_add_pin);
-                            toggleButton.setColorFilter(Color.RED);
                         }
                         if (stopToggleOn) {
                             toggleButton.setImageResource(R.drawable.ic_pin);
