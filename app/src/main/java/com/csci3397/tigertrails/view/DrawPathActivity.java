@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -16,12 +17,17 @@ public class DrawPathActivity extends AppCompatActivity {
     FloatingActionButton backButton;
     FloatingActionButton exitButton;
 
+    ImageButton toggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw_path);
 
         Context context = this;
+
+        toggle = findViewById(R.id.toggleModeButton);
+        toggle.setColorFilter(Color.GREEN);
 
         backButton = findViewById(R.id.backButton);
         exitButton = findViewById(R.id.exitButton);

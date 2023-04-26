@@ -39,8 +39,10 @@ import java.util.ArrayList;
 
 public class MapsFragment extends Fragment {
 
-    private OnMapReadyCallback callback = new OnMapReadyCallback() {
+    //var used in onMapReady when in draw path parent activity
+    private boolean stopToggleOn = false;
 
+    private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
          * Manipulates the map once available.
@@ -52,6 +54,10 @@ public class MapsFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
+
+            //ensure that when map is displayed, stopToggleOn is false
+            stopToggleOn = false;
+
             //overlay updated trinity map onto google maps
             LatLngBounds trinityBounds = new LatLngBounds(new LatLng(29.456563485593676, -98.48813698915492),
                     new LatLng(29.466813470420874, -98.47901476675511));
@@ -82,12 +88,22 @@ public class MapsFragment extends Fragment {
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(@NonNull LatLng latLng) {
-                        //add point to map
-                        Marker m = googleMap.addMarker(new MarkerOptions().position(latLng));
-                        markers.add(m);
-                        //add point to logical list of points
-                        Point p = new Point(latLng);
-                        points.add(p);
+                        //if regular pin drop
+                        if (!stopToggleOn) {
+                            //add green point to map
+                            Marker m = googleMap.addMarker(new MarkerOptions().position(latLng)
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                            );
+                            markers.add(m);
+                            //add regular point to logical list of points
+                            Point p = new Point(latLng);
+                            points.add(p);
+                        }
+                        //if stop
+                        if (stopToggleOn) {
+                            //open new dialog box to prompt user for stop description
+                            //TODO: finish toggle button
+                        }
                         if(points.size() > 1) {
                             Polyline l = googleMap.addPolyline(new PolylineOptions()
                                     .add(points.get(points.size()-1).getLatLng(), points.get(points.size()-2).getLatLng())
@@ -124,6 +140,15 @@ public class MapsFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         //TODO:implement toggle feature
+                        if (!stopToggleOn) {
+                            toggleButton.setImageResource(R.drawable.ic_add_pin);
+                            toggleButton.setColorFilter(Color.RED);
+                        }
+                        if (stopToggleOn) {
+                            toggleButton.setImageResource(R.drawable.ic_pin);
+                            toggleButton.setColorFilter(Color.GREEN);
+                        }
+                        stopToggleOn = !stopToggleOn;
                     }
                 });
 
@@ -131,7 +156,6 @@ public class MapsFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         //set up prompt for ask user for path name and description and to confirm they are done
-
                         Dialog finishDialog = new Dialog(view.getContext());
                         finishDialog.setContentView(R.layout.finish_path_dialog_layout);
                         finishDialog.show();
