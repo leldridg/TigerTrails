@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.csci3397.tigertrails.R;
-import com.csci3397.tigertrails.model.sRecyclerViewAdapter;
 
 /**
  * A simple {@link Fragment} subclass.

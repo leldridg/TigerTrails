@@ -6,10 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,17 +31,27 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-
-import org.w3c.dom.Text;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class MapsFragment extends Fragment {
 
+    //private DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference pathsRef = FirebaseDatabase.getInstance().getReference("paths");
+
+    private long numPaths;
+
     //var used in onMapReady when in draw path parent activity
     private boolean stopToggleOn = false;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
+
+
 
         /**
          * Manipulates the map once available.
@@ -56,6 +63,18 @@ public class MapsFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
+
+            pathsRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    numPaths = dataSnapshot.getChildrenCount();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    //TODO: Handle error
+                }
+            });
 
             //ensure that when map is displayed, stopToggleOn is false
             stopToggleOn = false;
@@ -240,10 +259,12 @@ public class MapsFragment extends Fragment {
                                     double s = m * 2.5;
                                     double min = s / 60;
                                     // make new path
-                                    Path newPath = new Path(inName, inDesc, m, min, points);
-
-                                    //TODO: add path to a user list of paths, allPaths?
-
+                                    Path newPath = new Path("admin", inName, inDesc, m, min, points);
+                                    // add to database
+                                    pathsRef.child("" + (numPaths + 1)).setValue(newPath);
+                                    //close dialog
+                                    finishDialog.dismiss();
+                                    googleMap.clear();
                                     //TODO: add intent to get user screen if possible
                                 }
                             }

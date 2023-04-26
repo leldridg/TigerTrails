@@ -15,14 +15,20 @@ import android.view.ViewGroup;
 import com.csci3397.tigertrails.R;
 import com.csci3397.tigertrails.model.Path;
 import com.csci3397.tigertrails.model.sRecyclerViewAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 //TODO: make a way to hide bottom nav bar while search bar is focused? / keboard displayed?
 public class SearchFragment extends Fragment {
 
-    //may want to change to different representation
-    private ArrayList<Path> paths = new ArrayList<Path>();
+    private DatabaseReference pathsRef = FirebaseDatabase.getInstance().getReference("paths");
+
+    private ArrayList<Path> allPaths = new ArrayList<Path>();
 
     private RecyclerView recyclerView;
 
@@ -47,18 +53,26 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setUpPaths();
+        //set up paths
+        pathsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot pathSnapshot : dataSnapshot.getChildren()) {
+                    Path path = pathSnapshot.getValue(Path.class);
+                    allPaths.add(path);
+                }
+                recyclerView = view.findViewById(R.id.searchRecyclerView);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                sRecyclerViewAdapter adapter = new sRecyclerViewAdapter(getContext(), allPaths);
+                recyclerView.setAdapter(adapter);
+            }
 
-        recyclerView = view.findViewById(R.id.searchRecyclerView);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //TODO: Handle error
+            }
+        });
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        sRecyclerViewAdapter adapter = new sRecyclerViewAdapter(getContext(), paths);
-        recyclerView.setAdapter(adapter);
     }
 
-    private void setUpPaths() {
-        for(int i = 0; i < 16; i++) {
-            paths.add(new Path("Test Path", .5, 3));
-        }
-    }
 }

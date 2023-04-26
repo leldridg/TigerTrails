@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "293848057610",
+    "project_id": "tiger-trails-384500",
+    "storage_bucket": "tiger-trails-384500.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:293848057610:android:7774e682303db951f81cf3",
+        "android_client_info": {
+          "package_name": "com.csci3397.tigertrails"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "293848057610-b6j35mlhfjrh8b64ah1p5ae6uuglglol.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwOmH-SyX9k1cOpUcTx15y1RzGPGZe5lU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "293848057610-b6j35mlhfjrh8b64ah1p5ae6uuglglol.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
