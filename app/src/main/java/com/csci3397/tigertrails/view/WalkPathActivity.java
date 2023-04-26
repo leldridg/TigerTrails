@@ -46,5 +46,8 @@ public class WalkPathActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
+
+
 }

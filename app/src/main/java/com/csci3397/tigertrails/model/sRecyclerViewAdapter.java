@@ -42,7 +42,7 @@ public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdap
 
         holder.pathName.setText(paths.get(position).getPathName());
         holder.minutes.setText(String.format("%s min", paths.get(position).getMinutes()));
-        holder.distance.setText(String.format("%s mi", paths.get(position).getDistance()));
+        holder.distance.setText(String.format("%s m", paths.get(position).getDistance()));
         holder.rating.setText(String.format("%s", paths.get(position).getRating()));
     }
 

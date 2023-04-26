@@ -1,19 +1,37 @@
 package com.csci3397.tigertrails.model;
 
+import java.util.ArrayList;
 import java.io.Serializable;
 
 public class Path implements Serializable {
-    String pathName;
-    int rating;
-    double distance;
-    double minutes;
+    private String pathName;
 
-    //new path
+    //private String creator;
+
+    private String description;
+    private int rating;
+    private double distance;
+    private double minutes;
+
+    private ArrayList<Point> points;
+
+    //DUMMY NEW PATH
     public Path(String pathName, double distance, double minutes) {
         this.pathName = pathName;
         this.rating = 0;
         this.distance = distance;
         this.minutes = minutes;
+        this.points = new ArrayList<Point>();
+    }
+
+    //new path
+    public Path(String pathName, String description, double distance, double minutes, ArrayList<Point> points) {
+        this.pathName = pathName;
+        this.distance = distance;
+        this.minutes = minutes;
+        this.points = points;
+        this.description = description;
+        this.rating = 0;
     }
 
     public String getPathName() {
@@ -30,6 +48,14 @@ public class Path implements Serializable {
 
     public double getMinutes() {
         return minutes;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public ArrayList<Point> getPoints() {
+        return points;
     }
     //TODO: finish
 }
