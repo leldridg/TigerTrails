@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.csci3397.tigertrails.R;
 import com.csci3397.tigertrails.model.Path;
+import com.csci3397.tigertrails.model.bRecyclerViewAdapter;
 import com.csci3397.tigertrails.model.sRecyclerViewAdapter;
 import com.csci3397.tigertrails.model.uRecyclerViewAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +37,8 @@ public class UserFragment extends Fragment {
     private DatabaseReference pathsRef = FirebaseDatabase.getInstance().getReference("paths");
 
     private RecyclerView recyclerView;
+
+    private boolean onBookmarked = false;
 
     private Button myPathsButton;
     private Button bookmarkedButton;
@@ -62,6 +66,17 @@ public class UserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        username = view.findViewById(R.id.username);
+        //after getting a user base, this won't be hardcoded
+        username.setText("Administrator");
+
+        myPathsButton = view.findViewById(R.id.myPathsButton);
+        bookmarkedButton = view.findViewById(R.id.bookmarkedButton);
+
+        int white = ContextCompat.getColor(getContext(), R.color.white);
+        int maroon = ContextCompat.getColor(getContext(), R.color.maroon);
+        bookmarkedButton.setBackgroundColor(Color.TRANSPARENT);
+
         pathsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -72,8 +87,13 @@ public class UserFragment extends Fragment {
                 }
                 recyclerView = view.findViewById(R.id.userRecyclerView);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                uRecyclerViewAdapter adapter = new uRecyclerViewAdapter(getContext(), allPaths);
-                recyclerView.setAdapter(adapter);
+                if (!onBookmarked) {
+                    uRecyclerViewAdapter adapter = new uRecyclerViewAdapter(getContext(), allPaths);
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    bRecyclerViewAdapter adapter = new bRecyclerViewAdapter(getContext(), allPaths);
+                    recyclerView.setAdapter(adapter);
+                }
             }
 
             @Override
@@ -82,12 +102,75 @@ public class UserFragment extends Fragment {
             }
         });
 
-        username = view.findViewById(R.id.username);
-        //after getting a user base, this won't be hardcoded
-        username.setText("Administrator");
 
-        myPathsButton = view.findViewById(R.id.myPathsButton);
-        bookmarkedButton = view.findViewById(R.id.bookmarkedButton);
+
+        myPathsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(onBookmarked) {
+                    onBookmarked = false;
+                    myPathsButton.setBackgroundColor(maroon);
+                    myPathsButton.setTextColor(white);
+                    bookmarkedButton.setBackgroundColor(Color.TRANSPARENT);
+                    bookmarkedButton.setTextColor(maroon);
+
+                    //may have to update recycler view here too
+                    pathsRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            ArrayList<Path> allPaths = new ArrayList<Path>();
+                            for (DataSnapshot pathSnapshot : dataSnapshot.getChildren()) {
+                                Path path = pathSnapshot.getValue(Path.class);
+                                allPaths.add(path);
+                            }
+                            //recyclerView = view.findViewById(R.id.userRecyclerView);
+                            //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                            uRecyclerViewAdapter adapter = new uRecyclerViewAdapter(getContext(), allPaths);
+                            recyclerView.setAdapter(adapter);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            //TODO: Handle error
+                        }
+                    });
+                }
+            }
+        });
+
+        bookmarkedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!onBookmarked) {
+                    onBookmarked = true;
+                    bookmarkedButton.setBackgroundColor(maroon);
+                    bookmarkedButton.setTextColor(white);
+                    myPathsButton.setBackgroundColor(Color.TRANSPARENT);
+                    myPathsButton.setTextColor(maroon);
+
+                    //update recycler view
+                    pathsRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            ArrayList<Path> allPaths = new ArrayList<Path>();
+                            for (DataSnapshot pathSnapshot : dataSnapshot.getChildren()) {
+                                Path path = pathSnapshot.getValue(Path.class);
+                                allPaths.add(path);
+                            }
+                            //recyclerView = view.findViewById(R.id.userRecyclerView);
+                            //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                            bRecyclerViewAdapter adapter = new bRecyclerViewAdapter(getContext(), allPaths);
+                            recyclerView.setAdapter(adapter);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            //TODO: Handle error
+                        }
+                    });
+                }
+            }
+        });
 
 //        myPathsButton.setOnClickListener(new View.OnClickListener() {
 //            @Override

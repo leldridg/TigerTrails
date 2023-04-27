@@ -299,7 +299,7 @@ public class MapsFragment extends Fragment {
                                     // calculate estimated time to walk path in minutes
                                     double min = km * 11;
                                     // make new path
-                                    Path newPath = new Path("admin", inName, inDesc, km, min, points);
+                                    Path newPath = new Path(numPaths + 1, "admin", inName, inDesc, km, min, points);
                                     // add to database
                                     pathsRef.child("" + (numPaths + 1)).setValue(newPath);
                                     //close dialog

@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public class Path implements Serializable {
 
-    //private int pathID;
+    private long pathID;
     private String pathName;
 
     private String creator;
@@ -25,7 +25,8 @@ public class Path implements Serializable {
     public Path() {}
 
     //new path
-    public Path(String creator, String pathName, String description, double distance, double minutes, ArrayList<Point> points) {
+    public Path(long pathID, String creator, String pathName, String description, double distance, double minutes, ArrayList<Point> points) {
+        this.pathID = pathID;
         this.creator = creator;
         this.pathName = pathName;
         this.distance = distance;
@@ -66,6 +67,10 @@ public class Path implements Serializable {
 
     public boolean isBookmarked() {
         return bookmarked;
+    }
+
+    public long getPathID() {
+        return pathID;
     }
     //TODO: finish
 }
