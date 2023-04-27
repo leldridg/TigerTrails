@@ -90,7 +90,48 @@ public class MapsFragment extends Fragment {
 
             //determine which activity the fragment is in; based on the activity, set up how to react
             Activity parentActivity = getActivity();
-            if (parentActivity instanceof DrawPathActivity) {
+            //System.out.println(parentActivity);
+            if (parentActivity instanceof PathActivity) {
+                //System.out.println("In PathActivity");
+                // Get the selected path from the intent extras
+                //Path clickedPath = getIntent().getParcelableExtra("clicked_path");
+                Path path = (Path) getActivity().getIntent().getSerializableExtra("clicked_path");
+
+                // Use the selected path to populate the UI
+                TextView pathName = getActivity().findViewById(R.id.path);
+                TextView distance = getActivity().findViewById(R.id.pDistance);
+                TextView estTime = getActivity().findViewById(R.id.pEstTime);
+                TextView desc = getActivity().findViewById(R.id.description);
+
+                //text elements
+                pathName.setText(path.getPathName());
+                distance.setText(String.format("%.2f km", path.getDistance()));
+                estTime.setText(String.format("%.2f min", path.getMinutes()));
+                desc.setText(path.getDescription());
+
+                //map
+                ArrayList<Point> points = path.getPoints();
+                //System.out.println("Size of points: " + points.size());
+                //display polylines between points, add markers for stops
+                for (int i = 0; i < points.size() - 1; i++) {
+                    Point curr = points.get(i);
+                    Point next = points.get(i + 1);
+                    //System.out.println(curr.getLatLng());
+                    googleMap.addPolyline(new PolylineOptions()
+                            .add(curr.getLatLng(), next.getLatLng())
+                            .color(Color.RED)
+                    );
+                    if (curr.isStop()) {
+                        googleMap.addMarker(new MarkerOptions().position(curr.getLatLng()).title(curr.getDesc()));
+                    }
+                }
+                //System.out.println(points.get(points.size()-1).isStop());
+                //System.out.println(points.get(points.size()-1).getDesc());
+                if (points.get(points.size() - 1).isStop()) {
+                    googleMap.addMarker(new MarkerOptions().position(points.get(points.size() - 1).getLatLng()).title(points.get(points.size() - 1).getDesc()));
+                }
+            } else if (parentActivity instanceof DrawPathActivity) {
+                //System.out.println("In DrawPathActivity");
                 //access DrawPathActivity's ImageButtons
                 ImageButton undoButton = (ImageButton) getActivity().findViewById(R.id.undoButton);
                 ImageButton toggleButton = (ImageButton) getActivity().findViewById(R.id.toggleModeButton);
@@ -256,15 +297,13 @@ public class MapsFragment extends Fragment {
                                         km += distanceBetween(point1,point2);
                                     }
                                     // calculate estimated time to walk path in minutes
-                                    double s = km * 2.5;
-                                    double min = s / 60;
+                                    double min = km * 11;
                                     // make new path
-                                    Path newPath = new Path("admin", inName, inDesc, km, min, points);
+                                    Path newPath = new Path(numPaths + 1, "admin", inName, inDesc, km, min, points);
                                     // add to database
                                     pathsRef.child("" + (numPaths + 1)).setValue(newPath);
                                     //close dialog
                                     finishDialog.dismiss();
-                                    googleMap.clear();
                                     //TODO: add intent to get user screen if possible
                                 }
                             }
@@ -274,25 +313,7 @@ public class MapsFragment extends Fragment {
 
             } else if (parentActivity instanceof WalkPathActivity) {
 
-            } else if (parentActivity instanceof PathActivity) {
-                // Get the selected path from the intent extras
-                //Path clickedPath = getIntent().getParcelableExtra("clicked_path");
-                Path path = (Path) getActivity().getIntent().getSerializableExtra("clicked_path");
-
-                // Use the selected path to populate the UI
-                TextView pathName = getActivity().findViewById(R.id.path);
-                TextView distance = getActivity().findViewById(R.id.pDistance);
-                TextView estTime = getActivity().findViewById(R.id.pEstTime);
-                TextView desc = getActivity().findViewById(R.id.description);
-
-                pathName.setText(path.getPathName());
-                distance.setText(String.format("%.2f km", path.getDistance()));
-                estTime.setText(String.format("%.2f km", path.getMinutes()));
-                desc.setText(path.getDescription());
-
-
-
-            } else {
+            }  else {
                 //parentActivity is null
             }
 
