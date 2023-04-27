@@ -18,7 +18,9 @@ public class Point implements Serializable {
 
     public Point(LatLng latLng) {
         this.latitude = latLng.latitude;
+        System.out.println(latitude);
         this.longitude = latLng.longitude;
+        System.out.println(longitude);
         this.isStop = false;
     }
 
@@ -39,5 +41,13 @@ public class Point implements Serializable {
 
     public String getDesc() {
         return desc;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 }

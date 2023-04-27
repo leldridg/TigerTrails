@@ -12,13 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.csci3397.tigertrails.R;
-import com.csci3397.tigertrails.view.ChooseMethodActivity;
 import com.csci3397.tigertrails.view.PathActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdapter.MyViewHolder>{
+public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdapter.sViewHolder>{
     Context context;
     static ArrayList<Path> paths;
 
@@ -30,16 +29,16 @@ public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdap
 
     @NonNull
     @Override
-    public sRecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public sViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflating layout, giving look to each row
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.search_list_row, parent, false);
 
-        return new sRecyclerViewAdapter.MyViewHolder(view, context);
+        return new sViewHolder(view, context);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull sRecyclerViewAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull sViewHolder holder, int position) {
         //assigning values to the rows created in the layout file based on the position of the recycler view
 
         holder.pathName.setText(paths.get(position).getPathName());
@@ -54,7 +53,7 @@ public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdap
         return paths.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class sViewHolder extends RecyclerView.ViewHolder {
         //grabbing row view from layout file
         //similar to an onCreate method
 
@@ -69,7 +68,7 @@ public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdap
         int ratingNum;
         boolean isBookmarked;
 
-        public MyViewHolder(@NonNull View itemView, Context context) {
+        public sViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
 
             upvote = itemView.findViewById(R.id.upvote); //stuff might go wrong here, R
