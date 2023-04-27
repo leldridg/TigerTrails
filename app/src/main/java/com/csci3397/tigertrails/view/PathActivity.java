@@ -25,14 +25,6 @@ public class PathActivity extends AppCompatActivity {
 
         backButton = findViewById(R.id.pathBackButton);
 
-        // Get the selected path from the intent extras
-//        Path clickedPath = getIntent().getParcelableExtra("clicked_path");
-        Path path = (Path) getIntent().getSerializableExtra("clicked_path");
-
-        // Use the selected path to populate the UI
-        TextView pathNameTextView = findViewById(R.id.path);
-        pathNameTextView.setText(path.getPathName());
-
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

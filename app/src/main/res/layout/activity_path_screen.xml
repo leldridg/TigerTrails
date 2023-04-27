@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="5dp"
-        android:text="0 mi"
+        android:text="0 km"
         android:textAlignment="viewEnd"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/pEstTime"
@@ -46,17 +46,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
+        android:layout_marginBottom="18dp"
         android:text="0 min"
         android:textAlignment="viewEnd"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="46dp" />
+        app:layout_constraintBottom_toTopOf="@+id/viewMapHolder"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Description blah blah blah"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -67,6 +69,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="15dp"
+        app:barrierMargin="2sp"
         app:layout_constraintBottom_toTopOf="@+id/description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -16,6 +16,7 @@ import com.csci3397.tigertrails.view.ChooseMethodActivity;
 import com.csci3397.tigertrails.view.PathActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdapter.MyViewHolder>{
     Context context;
@@ -24,6 +25,7 @@ public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdap
     public sRecyclerViewAdapter(Context context, ArrayList<Path> paths){
         this.context = context;
         this.paths = paths;
+        Collections.reverse(this.paths);
     }
 
     @NonNull
@@ -41,8 +43,8 @@ public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdap
         //assigning values to the rows created in the layout file based on the position of the recycler view
 
         holder.pathName.setText(paths.get(position).getPathName());
-        holder.minutes.setText(String.format("%s min", paths.get(position).getMinutes()));
-        holder.distance.setText(String.format("%s m", paths.get(position).getDistance()));
+        holder.minutes.setText(String.format("%.2f min", paths.get(position).getMinutes()));
+        holder.distance.setText(String.format("%.2f km", paths.get(position).getDistance()));
         holder.rating.setText(String.format("%s", paths.get(position).getRating()));
     }
 

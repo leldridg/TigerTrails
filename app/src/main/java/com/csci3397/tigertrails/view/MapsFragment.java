@@ -248,18 +248,18 @@ public class MapsFragment extends Fragment {
                                     error.setText("Please enter both a path name and description.");
                                 } else {
                                     error.setText("");
-                                    //calculate total path distance in meters
-                                    double m = 0;
+                                    //calculate total path distance in kilometers
+                                    double km = 0;
                                     for(int i = 0; i < points.size()-1; i++) {
                                         LatLng point1 = points.get(i).getLatLng();
                                         LatLng point2 = points.get(i+1).getLatLng();
-                                        m += distanceBetween(point1,point2);
+                                        km += distanceBetween(point1,point2);
                                     }
                                     // calculate estimated time to walk path in minutes
-                                    double s = m * 2.5;
+                                    double s = km * 2.5;
                                     double min = s / 60;
                                     // make new path
-                                    Path newPath = new Path("admin", inName, inDesc, m, min, points);
+                                    Path newPath = new Path("admin", inName, inDesc, km, min, points);
                                     // add to database
                                     pathsRef.child("" + (numPaths + 1)).setValue(newPath);
                                     //close dialog
@@ -275,6 +275,22 @@ public class MapsFragment extends Fragment {
             } else if (parentActivity instanceof WalkPathActivity) {
 
             } else if (parentActivity instanceof PathActivity) {
+                // Get the selected path from the intent extras
+                //Path clickedPath = getIntent().getParcelableExtra("clicked_path");
+                Path path = (Path) getActivity().getIntent().getSerializableExtra("clicked_path");
+
+                // Use the selected path to populate the UI
+                TextView pathName = getActivity().findViewById(R.id.path);
+                TextView distance = getActivity().findViewById(R.id.pDistance);
+                TextView estTime = getActivity().findViewById(R.id.pEstTime);
+                TextView desc = getActivity().findViewById(R.id.description);
+
+                pathName.setText(path.getPathName());
+                distance.setText(String.format("%.2f km", path.getDistance()));
+                estTime.setText(String.format("%.2f km", path.getMinutes()));
+                desc.setText(path.getDescription());
+
+
 
             } else {
                 //parentActivity is null
@@ -313,9 +329,7 @@ public class MapsFragment extends Fragment {
         double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
                 Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        double distance = R * c;
-
-        return distance * 1000; // return distance in meters
+        return R * c; // return distance in kilometers
     }
 
 }

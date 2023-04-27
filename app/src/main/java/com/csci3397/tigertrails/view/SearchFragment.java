@@ -28,8 +28,6 @@ public class SearchFragment extends Fragment {
 
     private DatabaseReference pathsRef = FirebaseDatabase.getInstance().getReference("paths");
 
-    private ArrayList<Path> allPaths = new ArrayList<Path>();
-
     private RecyclerView recyclerView;
 
     public SearchFragment() {
@@ -57,6 +55,7 @@ public class SearchFragment extends Fragment {
         pathsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Path> allPaths = new ArrayList<Path>();
                 for (DataSnapshot pathSnapshot : dataSnapshot.getChildren()) {
                     Path path = pathSnapshot.getValue(Path.class);
                     allPaths.add(path);

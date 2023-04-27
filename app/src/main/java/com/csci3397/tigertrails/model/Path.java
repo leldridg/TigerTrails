@@ -59,5 +59,13 @@ public class Path implements Serializable {
     public ArrayList<Point> getPoints() {
         return points;
     }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public boolean isBookmarked() {
+        return bookmarked;
+    }
     //TODO: finish
 }

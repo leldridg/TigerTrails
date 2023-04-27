@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="8dp"
-                android:text="0 m"
+                android:text="0 km"
                 android:textAlignment="viewEnd"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/bookmark"
