@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.csci3397.tigertrails.R;
 import com.csci3397.tigertrails.view.PathActivity;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,6 +46,9 @@ public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdap
         holder.minutes.setText(String.format("%.2f min", paths.get(position).getMinutes()));
         holder.distance.setText(String.format("%.2f km", paths.get(position).getDistance()));
         holder.rating.setText(String.format("%s", paths.get(position).getRating()));
+        if(paths.get(position).isBookmarked()) {
+            holder.bookmark.setImageResource(R.drawable.ic_bookmark_filled);
+        }
     }
 
     @Override
@@ -65,11 +69,13 @@ public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdap
         TextView minutes;
         TextView pathName;
 
-        int ratingNum;
-        boolean isBookmarked;
+        //int ratingNum;
+        //boolean isBookmarked;
 
         public sViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
 
             upvote = itemView.findViewById(R.id.upvote); //stuff might go wrong here, R
             downvote = itemView.findViewById(R.id.downvote);
@@ -98,36 +104,54 @@ public class sRecyclerViewAdapter extends RecyclerView.Adapter<sRecyclerViewAdap
                 }
             });
 
-            isBookmarked = false;
-            bookmark.setImageResource(R.drawable.ic_bookmark_border);
-
-            ratingNum = 0;
-            rating.setText(""+ratingNum);
-
             upvote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ratingNum = ratingNum + 1;
-                    rating.setText(""+ratingNum);
+                    // Get the position of the clicked item
+                    int position = getAdapterPosition();
+
+                    // Make sure the position is valid, i.e. actually exists in the view
+                    if (position != RecyclerView.NO_POSITION) {
+                        // Edit the rating of path at that position
+                        int newPathRating = paths.get(position).getRating()+1;
+                        rating.setText(""+newPathRating);
+                        database.getReference("paths/"+(paths.size()-position)).child("rating").setValue(newPathRating);
+                    }
+
                 }
             });
             downvote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ratingNum = ratingNum - 1;
-                    rating.setText(""+ratingNum);
+                    // Get the position of the clicked item
+                    int position = getAdapterPosition();
+
+                    // Make sure the position is valid, i.e. actually exists in the view
+                    if (position != RecyclerView.NO_POSITION) {
+                        // Edit the rating of path at that position
+                        int newPathRating = paths.get(position).getRating()-1;
+                        rating.setText(""+newPathRating);
+                        database.getReference("paths/"+(paths.size()-position)).child("rating").setValue(newPathRating);
+                    }
                 }
             });
 
             bookmark.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (isBookmarked) {
-                        bookmark.setImageResource(R.drawable.ic_bookmark_border);
-                        isBookmarked = false;
-                    } else {
-                        bookmark.setImageResource(R.drawable.ic_bookmark_filled);
-                        isBookmarked = true;
+                    int position = getAdapterPosition();
+
+                    if (position != RecyclerView.NO_POSITION) {
+
+                        boolean isBookmarked = paths.get(position).isBookmarked();
+
+                        if (isBookmarked) {
+                            bookmark.setImageResource(R.drawable.ic_bookmark_border);
+                            database.getReference("paths/"+(paths.size()-position)).child("bookmarked").setValue(false);
+                        } else {
+                            bookmark.setImageResource(R.drawable.ic_bookmark_filled);
+                            database.getReference("paths/"+(paths.size()-position)).child("bookmarked").setValue(true);
+                        }
                     }
                 }
             });

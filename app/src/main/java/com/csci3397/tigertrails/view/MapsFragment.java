@@ -297,8 +297,7 @@ public class MapsFragment extends Fragment {
                                         km += distanceBetween(point1,point2);
                                     }
                                     // calculate estimated time to walk path in minutes
-                                    double s = km * 2.5;
-                                    double min = s / 60;
+                                    double min = km * 11;
                                     // make new path
                                     Path newPath = new Path("admin", inName, inDesc, km, min, points);
                                     // add to database
