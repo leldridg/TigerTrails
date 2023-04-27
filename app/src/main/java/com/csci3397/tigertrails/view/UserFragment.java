@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +17,25 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.csci3397.tigertrails.R;
+import com.csci3397.tigertrails.model.Path;
+import com.csci3397.tigertrails.model.sRecyclerViewAdapter;
+import com.csci3397.tigertrails.model.uRecyclerViewAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 public class UserFragment extends Fragment {
+
+    private DatabaseReference pathsRef = FirebaseDatabase.getInstance().getReference("paths");
+
+    private RecyclerView recyclerView;
+
     private Button myPathsButton;
     private Button bookmarkedButton;
 
@@ -45,6 +61,26 @@ public class UserFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        pathsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Path> allPaths = new ArrayList<Path>();
+                for (DataSnapshot pathSnapshot : dataSnapshot.getChildren()) {
+                    Path path = pathSnapshot.getValue(Path.class);
+                    allPaths.add(path);
+                }
+                recyclerView = view.findViewById(R.id.userRecyclerView);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                uRecyclerViewAdapter adapter = new uRecyclerViewAdapter(getContext(), allPaths);
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //TODO: Handle error
+            }
+        });
 
         username = view.findViewById(R.id.username);
         //after getting a user base, this won't be hardcoded

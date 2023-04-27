@@ -90,9 +90,9 @@ public class MapsFragment extends Fragment {
 
             //determine which activity the fragment is in; based on the activity, set up how to react
             Activity parentActivity = getActivity();
-            System.out.println(parentActivity);
+            //System.out.println(parentActivity);
             if (parentActivity instanceof PathActivity) {
-                System.out.println("In PathActivity");
+                //System.out.println("In PathActivity");
                 // Get the selected path from the intent extras
                 //Path clickedPath = getIntent().getParcelableExtra("clicked_path");
                 Path path = (Path) getActivity().getIntent().getSerializableExtra("clicked_path");
@@ -111,12 +111,12 @@ public class MapsFragment extends Fragment {
 
                 //map
                 ArrayList<Point> points = path.getPoints();
-                System.out.println("Size of points: " + points.size());
+                //System.out.println("Size of points: " + points.size());
                 //display polylines between points, add markers for stops
                 for (int i = 0; i < points.size() - 1; i++) {
                     Point curr = points.get(i);
                     Point next = points.get(i + 1);
-                    System.out.println(curr.getLatLng());
+                    //System.out.println(curr.getLatLng());
                     googleMap.addPolyline(new PolylineOptions()
                             .add(curr.getLatLng(), next.getLatLng())
                             .color(Color.RED)
@@ -125,12 +125,13 @@ public class MapsFragment extends Fragment {
                         googleMap.addMarker(new MarkerOptions().position(curr.getLatLng()).title(curr.getDesc()));
                     }
                 }
+                //System.out.println(points.get(points.size()-1).isStop());
+                //System.out.println(points.get(points.size()-1).getDesc());
                 if (points.get(points.size() - 1).isStop()) {
                     googleMap.addMarker(new MarkerOptions().position(points.get(points.size() - 1).getLatLng()).title(points.get(points.size() - 1).getDesc()));
                 }
-
             } else if (parentActivity instanceof DrawPathActivity) {
-                System.out.println("In DrawPathActivity");
+                //System.out.println("In DrawPathActivity");
                 //access DrawPathActivity's ImageButtons
                 ImageButton undoButton = (ImageButton) getActivity().findViewById(R.id.undoButton);
                 ImageButton toggleButton = (ImageButton) getActivity().findViewById(R.id.toggleModeButton);
