@@ -264,7 +264,6 @@ public class MapsFragment extends Fragment {
                                     pathsRef.child("" + (numPaths + 1)).setValue(newPath);
                                     //close dialog
                                     finishDialog.dismiss();
-                                    googleMap.clear();
                                     //TODO: add intent to get user screen if possible
                                 }
                             }
@@ -285,12 +284,29 @@ public class MapsFragment extends Fragment {
                 TextView estTime = getActivity().findViewById(R.id.pEstTime);
                 TextView desc = getActivity().findViewById(R.id.description);
 
+                //text elements
                 pathName.setText(path.getPathName());
                 distance.setText(String.format("%.2f km", path.getDistance()));
                 estTime.setText(String.format("%.2f km", path.getMinutes()));
                 desc.setText(path.getDescription());
 
-
+                //map
+                ArrayList<Point> points = path.getPoints();
+                //display polylines between points, add markers for stops
+                for(int i = 0; i < points.size()-1; i++) {
+                    Point curr = points.get(i);
+                    Point next = points.get(i+1);
+                    googleMap.addPolyline(new PolylineOptions()
+                            .add(curr.getLatLng(), next.getLatLng())
+                            .color(Color.RED)
+                    );
+                    if(curr.isStop()) {
+                        googleMap.addMarker(new MarkerOptions().position(curr.getLatLng()).title(curr.getDesc()));
+                    }
+                }
+                if(points.get(points.size()-1).isStop()) {
+                    googleMap.addMarker(new MarkerOptions().position(points.get(points.size()-1).getLatLng()).title(points.get(points.size()-1).getDesc()));
+                }
 
             } else {
                 //parentActivity is null
