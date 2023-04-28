@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,13 +24,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 //TODO: make a way to hide bottom nav bar while search bar is focused? / keboard displayed?
 public class SearchFragment extends Fragment {
 
     private DatabaseReference pathsRef = FirebaseDatabase.getInstance().getReference("paths");
 
+    private ArrayList<Path> allPaths = new ArrayList<Path>();
+    private ArrayList<Path> filteredPaths = new ArrayList<Path>();
+    private SearchView searchView;
+
     private RecyclerView recyclerView;
+    private sRecyclerViewAdapter adapter;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -52,19 +59,40 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        searchView = view.findViewById(R.id.searchView);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return true;
+            }
+        });
+
         //set up paths
+        recyclerView = view.findViewById(R.id.searchRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        allPaths = new ArrayList<Path>();
+        filteredPaths = new ArrayList<Path>();
+        adapter = new sRecyclerViewAdapter(getContext(), filteredPaths);
+        recyclerView.setAdapter(adapter);
+
         pathsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<Path> allPaths = new ArrayList<Path>();
+                allPaths.clear();
                 for (DataSnapshot pathSnapshot : dataSnapshot.getChildren()) {
                     Path path = pathSnapshot.getValue(Path.class);
                     allPaths.add(path);
                 }
-                recyclerView = view.findViewById(R.id.searchRecyclerView);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                sRecyclerViewAdapter adapter = new sRecyclerViewAdapter(getContext(), allPaths);
-                recyclerView.setAdapter(adapter);
+                // Reverse the order of the allPaths list
+                Collections.reverse(allPaths);
+                filterList(searchView.getQuery().toString());
             }
 
             @Override
@@ -73,6 +101,16 @@ public class SearchFragment extends Fragment {
             }
         });
 
+    }
+
+    private void filterList(String text) {
+        filteredPaths.clear();
+        for(Path path : allPaths) {
+            if(path.getPathName().toLowerCase().contains(text.toLowerCase())) {
+                filteredPaths.add(path);
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 
 }
