@@ -19,13 +19,16 @@
 
     <TextView
         android:id="@+id/path"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginEnd="15dp"
+        android:gravity="center_vertical"
         android:text="Path Name"
         android:textAlignment="viewStart"
         android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/viewMapHolder"
+        app:layout_constraintEnd_toStartOf="@+id/pEstTime"
         app:layout_constraintStart_toEndOf="@+id/pathBackButton"
         app:layout_constraintTop_toTopOf="parent" />
 
