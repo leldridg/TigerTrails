@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.csci3397.tigertrails.R;
 import com.csci3397.tigertrails.model.Path;
@@ -68,7 +69,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //TODO: Handle error
+                Toast.makeText(getContext(), "Database Error", Toast.LENGTH_SHORT).show();
             }
         });
 

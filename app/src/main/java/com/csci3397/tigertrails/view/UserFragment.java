@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.csci3397.tigertrails.R;
 import com.csci3397.tigertrails.model.Path;
@@ -38,7 +39,7 @@ public class UserFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
-    private boolean onBookmarked = false;
+    private boolean onBookmarked;
 
     private Button myPathsButton;
     private Button bookmarkedButton;
@@ -65,6 +66,8 @@ public class UserFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        onBookmarked = false;
 
         username = view.findViewById(R.id.username);
         //after getting a user base, this won't be hardcoded
@@ -98,7 +101,7 @@ public class UserFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //TODO: Handle error
+                Toast.makeText(getContext(), "Database Error", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -131,7 +134,7 @@ public class UserFragment extends Fragment {
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            //TODO: Handle error
+                            Toast.makeText(getContext(), "Database Error", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -165,7 +168,7 @@ public class UserFragment extends Fragment {
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            //TODO: Handle error
+                            Toast.makeText(getContext(), "Database Error", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

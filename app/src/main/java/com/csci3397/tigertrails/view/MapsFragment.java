@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.csci3397.tigertrails.R;
 import com.csci3397.tigertrails.model.Path;
@@ -44,7 +47,7 @@ public class MapsFragment extends Fragment {
     //private DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference pathsRef = FirebaseDatabase.getInstance().getReference("paths");
 
-    private long numPaths;
+    private long numPaths = 0;
 
     //var used in onMapReady when in draw path parent activity
     private boolean stopToggleOn = false;
@@ -72,7 +75,7 @@ public class MapsFragment extends Fragment {
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    //TODO: Handle error
+                    Toast.makeText(getContext(), "Database Error", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -171,7 +174,6 @@ public class MapsFragment extends Fragment {
                         //if stop
                         if (stopToggleOn) {
                             //open new dialog box to prompt user for stop description
-                            //TODO: finish toggle button
                             Dialog stopDialog = new Dialog(getContext());
                             stopDialog.setContentView(R.layout.add_stop_dialog_layout);
                             stopDialog.show();
@@ -195,7 +197,7 @@ public class MapsFragment extends Fragment {
                                     if (inDesc.equals("")) {
                                         error.setText("Please enter a stop description.");
                                     } else {
-                                        Marker m = googleMap.addMarker(new MarkerOptions().position(latLng).title(inDesc) //TODO: check if setting title will show desc on click
+                                        Marker m = googleMap.addMarker(new MarkerOptions().position(latLng).title(inDesc)
                                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                                         );
                                         markers.add(m);
@@ -304,7 +306,9 @@ public class MapsFragment extends Fragment {
                                     pathsRef.child("" + (numPaths + 1)).setValue(newPath);
                                     //close dialog
                                     finishDialog.dismiss();
-                                    //TODO: add intent to get user screen if possible
+                                    //TODO: make intent go to user screen if possible
+                                    Intent intent = new Intent(getContext(), MainActivity.class);
+                                    startActivity(intent);
                                 }
                             }
                         });

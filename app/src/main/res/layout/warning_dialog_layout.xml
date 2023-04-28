@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="350dp"
+    android:layout_height="250dp"
+    android:layout_gravity="center">
+
+    <ImageView
+        android:id="@+id/warningIconLeft"
+        android:layout_width="52dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentStart="true"
+        app:srcCompat="@drawable/ic_warning"
+        app:tint="@color/maroon" />
+
+    <ImageView
+        android:id="@+id/warningIconRight"
+        android:layout_width="52dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="60dp"
+        android:layout_marginTop="15dp"
+        app:srcCompat="@drawable/ic_warning"
+        app:tint="@color/maroon" />
+
+    <TextView
+        android:id="@+id/warningLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="warning"
+        android:layout_marginTop="18dp"
+        android:textAllCaps="true"
+        android:textColor="@color/maroon"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/acknowledge"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/repairHint"
+        android:layout_marginTop="12dp"
+        android:text="OK" />
+
+    <TextView
+        android:id="@+id/warningMsg"
+        android:layout_below="@id/warningLabel"
+        android:layout_marginHorizontal="45dp"
+        android:layout_marginTop="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Some of the features of this app may not work properly without internet access!"
+        android:textAlignment="center"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/repairHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/warningMsg"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="45dp"
+        android:layout_marginTop="10dp"
+        android:text="If you experience any errors, please try reconnecting to the internet."
+        android:textAlignment="center"
+        android:textSize="16sp" />
+</RelativeLayout>
